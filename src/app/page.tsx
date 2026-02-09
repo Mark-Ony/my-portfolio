@@ -2,6 +2,7 @@ import { Hero } from "@/components/Sections/hero";
 import { About } from "@/components/Sections/about/about.server";
 import { Skills } from "@/components/Sections/skills/skills";
 import { Testimonials } from "@/components/cards/testimonial-card";
+import { Contact } from "@/components/form/contactform";
 export default function Home() {
   return (
     <main>
@@ -15,6 +16,10 @@ export default function Home() {
        <Skills />
       </section>
       <Testimonials />
+
+      <section id="contact">
+        <Contact />
+      </section>
       
     </main>
   );
