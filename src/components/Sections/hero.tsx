@@ -1,6 +1,7 @@
 "use client";
 import { motion } from 'framer-motion';
 import { ChevronDown, Sparkles } from 'lucide-react';
+import Image from 'next/image';
 
 export function Hero() {
   return (
@@ -28,15 +29,19 @@ export function Hero() {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 200 }}
-            className="relative w-40 h-40 mx-auto"
+            className="relative w-54 h-55 mx-auto"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-green-400 to-orange-500 rounded-full blur-xl opacity-30 animate-pulse" />
-            <div className="relative w-full h-full rounded-full border-4 border-gray-800 overflow-hidden bg-gray-900 flex items-center justify-center text-6xl">
-              👨‍💻
+            <div className="relative w-full h-full rounded-full border-4 border-gray-800 overflow-hidden">
+              <Image
+                src="/assets/mark.jpg"
+                alt="Mark Onyango"
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
-            <div className="absolute -bottom-2 -right-2 w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-orange-500 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-black" />
-            </div>
+        
           </motion.div>
 
           {/* Headline */}
@@ -67,10 +72,7 @@ export function Hero() {
             transition={{ delay: 0.4 }}
             className="max-w-2xl mx-auto"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900/50 rounded-full border border-gray-800 mb-4">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
-              <span className="text-emerald-400 font-medium">Available for projects</span>
-            </div>
+            
             <p className="text-lg text-gray-400 leading-relaxed">
               I build intelligent web applications and automation solutions that 
               transform businesses through cutting-edge technology and AI integration.
@@ -100,29 +102,6 @@ export function Hero() {
             >
               Contact Me
             </motion.a>
-          </motion.div>
-
-          {/* Tech Stack */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="pt-12"
-          >
-            <p className="text-gray-500 text-sm uppercase tracking-wider mb-4">Tech Stack</p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {['React', 'Next.js', 'Node.js', 'Python', 'AI/ML', 'DevOps'].map((tech, index) => (
-                <motion.span
-                  key={tech}
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.8 + index * 0.1 }}
-                  className="px-4 py-2 bg-gray-900/50 border border-gray-800 rounded-full text-gray-300 text-sm hover:border-emerald-500/50 transition-colors"
-                >
-                  {tech}
-                </motion.span>
-              ))}
-            </div>
           </motion.div>
         </div>
       </div>
