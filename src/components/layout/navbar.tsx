@@ -58,7 +58,7 @@ export function Navbar() {
               <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent">
                 Mark Onyango
               </span>
-              <span className="text-xs text-gray-500 font-medium">Portfolio</span>
+            
             </div>
           </Link>
 
