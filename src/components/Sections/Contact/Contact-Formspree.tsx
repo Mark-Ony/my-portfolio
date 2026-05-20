@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
+import { useForm as useFormspree } from '@formspree/react';
 
 // shadcn/ui components
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,10 @@ const contactFormSchema = z.object({
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export function Contact() {
-  // Initialize form
+  // Formspree integration - form ID: xwvzvjvb
+  const [formspreeState, formspreeHandleSubmit] = useFormspree('xwvzvjvb');
+
+  // Initialize react-hook-form
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
@@ -48,23 +52,31 @@ export function Contact() {
       email: "",
       message: "",
     },
-    mode: "onChange", // Validate on change for immediate feedback
+    mode: "onChange",
   });
 
   // Form submission handler
   async function onSubmit(data: ContactFormValues) {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // Create form data for Formspree
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email);
+      formData.append('message', data.message);
+
+      // Submit to Formspree
+      await formspreeHandleSubmit(formData);
+
+      // Show success message
       toast.success("Message sent successfully!", {
         description: "Thank you for reaching out. I'll get back to you soon.",
         duration: 5000,
       });
-      
-      // Reset form after successful submission
+
+      // Reset form
       form.reset();
     } catch (error) {
+      console.error('Form submission error:', error);
       toast.error("Failed to send message", {
         description: "Please try again later.",
         duration: 5000,
@@ -74,6 +86,27 @@ export function Contact() {
 
   // Watch message length for character counter
   const messageLength = form.watch("message")?.length || 0;
+
+  // Check if Formspree submission succeeded
+  React.useEffect(() => {
+    if (formspreeState.succeeded) {
+      toast.success("Message sent successfully!", {
+        description: "Thank you for reaching out. I'll get back to you soon.",
+        duration: 5000,
+      });
+      form.reset();
+    }
+  }, [formspreeState.succeeded, form]);
+
+  // Check if Formspree submission failed - FIXED: removed .length check
+  React.useEffect(() => {
+    if (formspreeState.errors) {
+      toast.error("Failed to send message", {
+        description: "Please try again later.",
+        duration: 5000,
+      });
+    }
+  }, [formspreeState.errors]);
 
   return (
     <section id="contact" className="py-20 bg-gradient-to-b from-white to-gray-50">
@@ -137,7 +170,6 @@ export function Contact() {
                 </div>
 
                 <div className="mt-8">
-                  <h4 className="text-gray-900 font-semibold mb-4">Follow Me</h4>
                   <div className="flex gap-3">
                     <a
                       href="https://github.com/Mark-Ony"
@@ -203,13 +235,7 @@ export function Contact() {
                           <FormControl>
                             <Input
                               placeholder="Your name"
-                              className={`
-                                bg-white border-gray-300 text-gray-900 
-                                placeholder:text-gray-400 
-                                focus:border-blue-500 focus:ring-blue-500
-                                transition-colors duration-200
-                                ${fieldState.error && "border-red-500 focus:border-red-500 focus:ring-red-500"}
-                              `}
+                              className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200 ${fieldState.error && "border-red-500 focus:border-red-500 focus:ring-red-500"}`}
                               {...field}
                             />
                           </FormControl>
@@ -231,13 +257,7 @@ export function Contact() {
                             <Input
                               placeholder="your@email.com"
                               type="email"
-                              className={`
-                                bg-white border-gray-300 text-gray-900 
-                                placeholder:text-gray-400 
-                                focus:border-blue-500 focus:ring-blue-500
-                                transition-colors duration-200
-                                ${fieldState.error && "border-red-500 focus:border-red-500 focus:ring-red-500"}
-                              `}
+                              className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200 ${fieldState.error && "border-red-500 focus:border-red-500 focus:ring-red-500"}`}
                               {...field}
                             />
                           </FormControl>
@@ -256,25 +276,14 @@ export function Contact() {
                             <FormLabel className="text-gray-700">
                               Message
                             </FormLabel>
-                            <span
-                              className={`
-                                text-sm
-                                ${messageLength > 1000 ? "text-red-500" : "text-gray-500"}
-                              `}
-                            >
+                            <span className={`text-sm ${messageLength > 1000 ? "text-red-500" : "text-gray-500"}`}>
                               {messageLength}/1000
                             </span>
                           </div>
                           <FormControl>
                             <Textarea
                               placeholder="Tell me about your project..."
-                              className={`
-                                bg-white border-gray-300 text-gray-900 
-                                placeholder:text-gray-400 min-h-[150px]
-                                focus:border-blue-500 focus:ring-blue-500
-                                transition-colors duration-200 resize-none
-                                ${fieldState.error && "border-red-500 focus:border-red-500 focus:ring-red-500"}
-                              `}
+                              className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 min-h-[150px] focus:border-blue-500 focus:ring-blue-500 transition-colors duration-200 resize-none ${fieldState.error && "border-red-500 focus:border-red-500 focus:ring-red-500"}`}
                               {...field}
                             />
                           </FormControl>
@@ -286,36 +295,41 @@ export function Contact() {
                     {/* Submit Button */}
                     <Button
                       type="submit"
-                      disabled={form.formState.isSubmitting}
-                      className={`
-                        w-full px-6 py-6 bg-gradient-to-r from-blue-600 to-cyan-500 
-                        text-white font-semibold rounded-lg hover:shadow-lg 
-                        hover:shadow-blue-500/30 transition-all duration-300 
-                        hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed
-                        ${form.formState.isSubmitting && "animate-pulse"}
-                      `}
+                      disabled={formspreeState.submitting || !form.formState.isValid}
+                      className={`w-full px-6 py-6 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed ${formspreeState.submitting && "animate-pulse"}`}
                     >
-                      {form.formState.isSubmitting ? (
+                      {formspreeState.submitting ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2 inline-block" />
                           Sending...
                         </>
                       ) : (
                         <>
-                          <Send className="w-4 h-4 mr-2" />
+                          <Send className="w-4 h-4 mr-2 inline" />
                           Send Message
                         </>
                       )}
                     </Button>
 
-                    {/* Form Status */}
-                    {form.formState.isSubmitSuccessful && (
+                    {/* Success Message */}
+                    {formspreeState.succeeded && (
                       <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="text-blue-500 text-sm text-center"
                       >
                         Message sent successfully! I will get back to you soon.
+                      </motion.p>
+                    )}
+
+                    {/* Error Message - FIXED: removed .length check */}
+                    {formspreeState.errors && (
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-red-500 text-sm text-center"
+                      >
+                        Failed to send message. Please try again.
                       </motion.p>
                     )}
                   </form>

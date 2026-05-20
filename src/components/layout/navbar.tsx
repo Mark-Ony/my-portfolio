@@ -58,7 +58,6 @@ export function Navbar() {
               <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent">
                 Mark Onyango
               </span>
-            
             </div>
           </Link>
 
@@ -75,7 +74,7 @@ export function Navbar() {
               </Link>
             ))}
             <motion.a
-              href="assets/resume.pdf"
+              href="/resume.pdf"
               download="Mark_Onyango_Resume.pdf"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -135,7 +134,7 @@ export function Navbar() {
               <div className="px-4 pt-2">
                 <motion.a
                   href="/resume.pdf"
-                  download
+                  download="Mark_Onyango_Resume.pdf"
                   whileTap={{ scale: 0.95 }}
                   className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
                   onClick={() => setMobileOpen(false)}

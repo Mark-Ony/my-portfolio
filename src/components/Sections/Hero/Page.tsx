@@ -1,6 +1,5 @@
 "use client";
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 
 export function Hero() {
@@ -53,7 +52,7 @@ export function Hero() {
               transition={{ delay: 0.3 }}
               className="text-xl md:text-2xl text-gray-700 font-medium"
             >
-              Full Stack Developer & AI Specialist
+              Full Stack & AI Engineer building intelligent automation systems
             </motion.p>
           </div>
 
@@ -65,7 +64,8 @@ export function Hero() {
             className="max-w-2xl mx-auto"
           >
             <p className="text-lg text-gray-600">
-              Building intelligent web applications and AI solutions that drive business transformation.
+              I design and build AI-powered systems that automate business workflows,
+connect messaging platforms, and process real-time payments at scale.
             </p>
           </motion.div>
 
@@ -82,7 +82,7 @@ export function Hero() {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-blue-500/20 transition-all"
             >
-              View Projects
+              See Case Studies
             </motion.a>
             <motion.a
               href="#contact"
@@ -90,7 +90,7 @@ export function Hero() {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3 border border-gray-300 text-gray-700 font-semibold rounded-xl hover:border-blue-400 hover:bg-blue-50 transition-all"
             >
-              Contact Me
+              Start a Project
             </motion.a>
           </motion.div>
         </div>
@@ -103,12 +103,7 @@ export function Hero() {
         transition={{ delay: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <ChevronDown className="w-6 h-6 text-blue-500" />
-        </motion.div>
+      
       </motion.div>
     </section>
   );
