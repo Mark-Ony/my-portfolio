@@ -4,7 +4,7 @@ import { Hero } from "@/components/Sections/Hero/Page";
 import { Skills } from "@/components/Sections/skills/Page";
 import { About } from "@/components/Sections/About/Page";
 import { Contact } from "@/components/Sections/Contact/Contact-Formspree"
-import { Projects } from "@/app/projects/page";
+import { Projects } from "@/components/Sections/project";
 
 
 export default  async function Home() {
